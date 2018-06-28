@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API Document</title>
+    <style>
+        th, td {
+            padding : 10px;
+        }
+        th {
+            text-align : left;
+        }
+    </style>
+</head>
+<body>
+    <h2># OpenHack Gangster Statement</h2> 
+    <table border="1">
+        <thead>
+            <tr>
+                <th>정보</th>
+                <th>요청 URL</th>
+                <th>응답</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>[POST] 회원가입</th>
+                <td>{{ host }}list/realtime</td>
+                <td>
+                    요청 : { username : "&lt;username>", password : "&lt;password>" }<br>
+                    응답 : {
+                        status : true/false
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>[POST] 로그인</th>
+                <td>{{ host }}list/realtime</td>
+                <td>
+                    요청 : { username : "&lt;username>", password : "&lt;password>" }<br>
+                    응답 : {
+                        status : true/false
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>실시간 차트</th>
+                <td>{{ host }}list/realtime</td>
+                <td>
+                    <pre>이미지 / 노래 제목 / 가수 이름 / 편향
+응답 : [
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        bias : 1, // 순위 상승/하강
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        bias : 1, // 순위 상승/하강
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        bias : 1, // 순위 상승/하강
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        bias : 1, // 순위 상승/하강
+    },
+]</pre>
+                </td>
+            </tr>
+            <tr>
+                <th>디럭 추천 - 추천 차트</th>
+                <td>{{ host }}list/recommand</td>
+                <td>
+                    <pre>이미지 / 노래 제목 / 가수 이름
+응답 : [
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+    },
+]</pre></td>
+            </tr>
+            <tr>
+                <th>발할라 - 삭제 목록</th>
+                <td>{{ host }}list/deleted</td>
+                <td>
+                    <pre>이미지 / 노래 제목 / 가수 이름
+응답 : [
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        deleted : "", // 삭제 날짜
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        deleted : "", // 삭제 날짜
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        deleted : "", // 삭제 날짜
+    },
+    {
+        image : "", // 이미지 URL
+        title : "", // 노래 이름
+        artist : "", // 가수 이름
+        deleted : "", // 삭제 날짜
+    },
+]</pre></td>
+            </tr>
+            <tr>
+                <th>음악 정보</th>
+                <td>{{ host }}detail/{index}</td>
+                <td><pre>{
+    image : "", // 이미지 URL
+    time : 213, // 213초
+    artist : "", // 가수
+    album : "", // 앨범명
+    lyric : "", // 가사 내용
+    thema : "", // 테마
+    genre : "", // 장르
+}</pre></td>
+            </tr>
+            <tr>
+                <th>음악 정보 ( for AI )</th>
+                <td>{{ host }}detail/ai/{index}</td>
+                <td><pre>{
+    image : "", // 이미지 URL
+    time : 213, // 213초
+    artist : "", // 가수
+    album : "", // 앨범명
+    lyric : "", // 가사 내용
+    thema : "", // 테마
+    genre : "", // 장르
+    userList : [ // 유저 목록
+        'username',
+        'cheche',
+        'jtjisgod',
+    ]
+}</pre></td>
+                </tr>
+            <tr>
+                <th>장르</th>
+                <td>{{ host }}list/genre</td>
+                <td>고유아이디 / 장르명 / 장르별 음악 개수</td>
+            </tr>
+            <tr>
+                <th>테마</th>
+                <td>{{ host }}list/thema</td>
+                <td>고유아이디 / 테마명 / 테마별 음악 개수</td>
+            </tr>
+            <tr>
+                <th>장르속 음악</th>
+                <td>{{ host }}list/genre/{idx}</td>
+                <td>이미지 / 노래 제목 / 가수 이름</td>
+            </tr>
+            <tr>
+                <th>테마속 음악</th>
+                <td>{{ host }}list/thema/{idx}</td>
+                <td>이미지 / 노래 제목 / 가수 이름</td>
+            </tr>
+            <tr>
+                <th>내가 좋아하는 음악</th>
+                <td>{{ host }}love/music</td>
+                <td>이미지 / 노래 제목 / 가수 이름</td>
+            </tr>
+            <tr>
+                <th>내가 사랑하는 가수</th>
+                <td>{{ host }}love/artist</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>내가 좋아하는 앨범</th>
+                <td>{{ host }}love/album</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>내가 좋아하는 음악 추가</th>
+                <td>{{ host }}add/music/{idx}</td>
+                <td>status ( success / fail )</td>
+            </tr>
+            <tr>
+                <th>내가 사랑하는 가수 추가</th>
+                <td>{{ host }}add/artist/{idx}</td>
+                <td>status ( success / fail )</td>
+            </tr>
+            <tr>
+                <th>내가 좋아하는 앨범 추가</th>
+                <td>{{ host }}add/album/{idx}</td>
+                <td>status ( success / fail )</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
