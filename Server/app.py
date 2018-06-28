@@ -6,6 +6,7 @@ import time
 import sqlite3
 import os
 import json
+import random
 
 app = Flask(__name__)
 
@@ -48,11 +49,36 @@ def index() :
 
 @app.route("/download")
 def download() :
-    # f = open("crawlTag", "r")
-    # tags = f.read().split("\n")
-    # f.close()
     cursor.execute("Select * from Musics")
     return json.dumps(cursor.fetchall())
+
+@app.route("/mainPlayList")
+def mainPlayList() :
+    cursor.execute("Select * from Musics")
+    lst = cursor.fetchall()
+    random.shuffle(lst)
+    return json.dumps(lst[0])
+
+@app.route("/Walhalla")
+def Walhalla() :
+    cursor.execute("Select * from Musics")
+    lst = cursor.fetchall()
+    random.shuffle(lst)
+    return json.dumps(lst[0])
+
+@app.route("/shuffle/<category>")
+def shuffle(category) :
+    cursor.execute("Select * from Musics where genre=?", (category,))
+    lst = cursor.fetchall()
+    random.shuffle(lst)
+    return json.dumps(lst[0])
+
+@app.route("/crawlTag")
+def crawlTag() :
+    f = open("./crawlTag", "r")
+    lst = f.read().split("\n")
+    f.close()
+    return json.dumps(lst)
 
 @app.route("/crawl")
 def crawl() :
@@ -82,6 +108,9 @@ def crawl() :
                         pass
                     track = collection['track']['id']
                     playback = collection['track']['playback_count']
+                    cursor.execute("Select idx from Musics where track=?", (track,))
+                    if len(cursor.fetchall()) > 0 :
+                        continue
                     cursor.execute("Insert into Musics(genre, artist, playback, track, bgImage, title)values(?, ?, ?, ?, ?, ?)", (genre, artist, playback, track, bgImage, title))
                     conn.commit()        
             except :
