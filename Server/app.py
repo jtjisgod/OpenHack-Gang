@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import time
 import sqlite3
@@ -18,7 +18,7 @@ if not os.path.isfile("database.db") :
         idx INTEGER PRIMARY KEY AUTOINCREMENT,
         genre varchar(255),
         artist varchar(255),
-        playback varchar(255),
+        playback int(255),
         track int(255),
         bgImage varchar(255),
         title varchar(255),
@@ -34,7 +34,14 @@ if not os.path.isfile("database.db") :
         feature_10 int(11) DEFAULT 0,
         feature_11 int(11) DEFAULT 0,
         feature_12 int(11) DEFAULT 0
-    )
+    );
+    """)
+    cursor.execute("""
+        Create Table Likes (
+        idx INTEGER PRIMARY KEY AUTOINCREMENT,
+        imei int(11) default 0,
+        musicIdx int(11) default 0
+    );
     """)
     cursor.close()
     conn.commit()
@@ -51,6 +58,23 @@ def index() :
 def download() :
     cursor.execute("Select * from Musics")
     return json.dumps(cursor.fetchall())
+
+@app.route("/like/<idx>")
+def like(idx) :
+    imei = request.args['imei']
+    musicIdx = idx
+    try :
+        imei = int(imei)
+        musicIdx = int(musicIdx)
+    except :
+        return "error"
+    cursor.execute("Select idx from Likes where imei=? and musicIdx=?", (imei, musicIdx))
+    if cursor.fetchall() :
+        cursor.execute("Delete from Likes where imei=? and musicIdx=?", (imei, musicIdx))
+        return "dislike"
+    cursor.execute("Insert into Likes(imei, musicIdx)values(?, ?)", (imei, musicIdx))
+    conn.commit()
+    return "like"
 
 @app.route("/mainPlayList")
 def mainPlayList() :
