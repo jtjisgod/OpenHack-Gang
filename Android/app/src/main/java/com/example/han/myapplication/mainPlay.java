@@ -19,6 +19,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,19 @@ public class mainPlay extends FragmentActivity {
     private TextView artist;
     private TextView musicTitle;
     private HashMap<String, String> music;
+    private boolean isPlaying = false;
     public MediaPlayer mediaPlayer;
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            while(toggle) {
+                ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
+                progress.setProgress(mediaPlayer.getCurrentPosition());
+            }
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +68,20 @@ public class mainPlay extends FragmentActivity {
         musicTitle = (TextView)findViewById(R.id.title);
         artist = (TextView)findViewById(R.id.artist);
         nextMusic();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                toggle = false;
+                nextMusic();
+            }
+        });
     }
 
     private void nextMusic() {
         music = gangNetwork.getMusic();
         bgImage = (ImageView)findViewById(R.id.background_image);
-        if(music.get("title").length() > 30) {
-            musicTitle.setText(music.get("title").substring(0, 30) + "...");
+        if(music.get("title").length() > 25) {
+            musicTitle.setText(music.get("title").substring(0, 25) + "...");
         } else {
             musicTitle.setText(music.get("title"));
         }
@@ -69,12 +89,16 @@ public class mainPlay extends FragmentActivity {
         Picasso.get().load(music.get("bgImage")).into(bgImage);
         play(music.get("mp3Url"));
         toggle = true;
+        ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
+        progress.setMax(mediaPlayer.getDuration());
+        progress.setProgress(0);
+        new MyThread().start();
     }
 
     private String getPhone() {
         TelephonyManager phoneMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            return "";
+            return "01011111111";
         }
         return phoneMgr.getLine1Number().split("\\+")[1];
     }
@@ -95,7 +119,18 @@ public class mainPlay extends FragmentActivity {
             toggle = true;
             ((ImageView)v).setImageResource(R.drawable.stop);
             mediaPlayer.start();
+            new MyThread().start();
         }
+    }
+
+    public void menu(View v) {
+        ((ImageView)v).setVisibility(View.INVISIBLE);
+        gangNetwork.like(Integer.parseInt(music.get("idx")));
+    }
+
+    public void like(View v) {
+        ((ImageView)v).setVisibility(View.INVISIBLE);
+        gangNetwork.like(Integer.parseInt(music.get("idx")));
     }
 
     public void play(String Murl){
@@ -110,11 +145,6 @@ public class mainPlay extends FragmentActivity {
             Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-    }
-
-    public void like(View v) {
-        ((ImageView)v).setVisibility(View.INVISIBLE);
-        gangNetwork.like(Integer.parseInt(music.get("idx")));
     }
 
     public class CircleTransform implements Transformation {
