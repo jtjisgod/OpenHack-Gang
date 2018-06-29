@@ -8,20 +8,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Animatable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -57,7 +63,7 @@ import org.json.JSONException;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     final static int PERMISSION_REQUEST_CODE = 1;
 
@@ -88,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         musicQueueInit();
         showImages();
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
+        musicImage.get(0).setAnimation(animation);
 
 //        gangNetwork.like(200);
 //        gangNetwork.like(123);
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showImages() {
+
         for(int i=0;i<6;i++) {
             HashMap<String, String> tmp = musicQueue.poll();
             musicQueue.add(tmp);
@@ -159,7 +168,11 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this.activity, new String[]{permission},PERMISSION_REQUEST_CODE);
     }
 
+
     public class CircleTransform implements Transformation {
+        private final int BORDER_COLOR = Color.WHITE;
+        private final int BORDER_RADIUS = 5;
+
         @Override
         public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
@@ -168,8 +181,7 @@ public class MainActivity extends AppCompatActivity {
             int y = (source.getHeight() - size) / 2;
 
             Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-
-            if(squaredBitmap != source){
+            if (squaredBitmap != source) {
                 source.recycle();
             }
 
@@ -182,9 +194,19 @@ public class MainActivity extends AppCompatActivity {
             paint.setAntiAlias(true);
 
             float r = size / 2f;
-            canvas.drawCircle(r, r, r, paint);
-            squaredBitmap.recycle();
 
+            // Prepare the background
+            Paint paintBg = new Paint();
+            paintBg.setColor(BORDER_COLOR);
+            paintBg.setAntiAlias(true);
+
+            // Draw the background circle
+            canvas.drawCircle(r, r, r, paintBg);
+
+            // Draw the image smaller than the background so a little border will be seen
+            canvas.drawCircle(r, r, r - BORDER_RADIUS, paint);
+
+            squaredBitmap.recycle();
             return bitmap;
         }
 

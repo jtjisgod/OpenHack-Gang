@@ -5,72 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_layout"
-    tools:context="com.example.han.myapplication.MainActivity">
+    tools:context="com.example.han.myapplication.MainActivity"
+    android:background="@drawable/valhallagradation">
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp6"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="300dp"
-        android:background="@drawable/circle"
         />
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp5"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        android:background="@drawable/circle"
+        android:layout_marginTop="260dp"
         />
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp4"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/circle"
+        android:layout_marginTop="220dp"
         />
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp3"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:background="@drawable/circle"
+        android:layout_marginTop="180dp"
         />
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp2"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/circle"
+        android:layout_marginTop="140dp"
         />
 
-    <ImageButton
+    <ImageView
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:id="@+id/lp1"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/circle"
+        android:layout_marginTop="100dp"
         />
 
 
