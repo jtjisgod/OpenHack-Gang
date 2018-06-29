@@ -43,6 +43,13 @@ if not os.path.isfile("database.db") :
         musicIdx int(11) default 0
     );
     """)
+    cursor.execute("""
+        Create Table Walhalla (
+        idx INTEGER PRIMARY KEY AUTOINCREMENT,
+        imei int(11) default 0,
+        musicIdx int(11) default 0
+    );
+    """)
     cursor.close()
     conn.commit()
     conn.close()
@@ -70,8 +77,8 @@ def like(idx) :
         return "error"
     cursor.execute("Select idx from Likes where imei=? and musicIdx=?", (imei, musicIdx))
     if cursor.fetchall() :
-        cursor.execute("Delete from Likes where imei=? and musicIdx=?", (imei, musicIdx))
         return "dislike"
+        cursor.execute("Delete from Likes where imei=? and musicIdx=?", (imei, musicIdx))
     cursor.execute("Insert into Likes(imei, musicIdx)values(?, ?)", (imei, musicIdx))
     conn.commit()
     return "like"
@@ -83,11 +90,33 @@ def mainPlayList() :
     random.shuffle(lst)
     return json.dumps(lst[0])
 
+@app.route("/likeList")
+def likeList() :
+    imei = request.args['imei']
+    try :
+        imei = int(imei)
+    except :
+        return "error"
+    cursor.execute("Select musicIdx from Likes where imei=?", (imei,))
+    lst = []
+    for row in cursor.fetchall() :
+        cursor.execute("Select * from Musics where idx=?", (row[0],))
+        lst.append(cursor.fetchone())
+    random.shuffle(lst)
+    return json.dumps(lst[0])
+
 @app.route("/Walhalla")
 def Walhalla() :
-    cursor.execute("Select * from Musics")
+    imei = request.args['imei']
+    try :
+        imei = int(imei)
+    except :
+        return "error"
+    cursor.execute("Select * from Musics where playback > 1000")
     lst = cursor.fetchall()
     random.shuffle(lst)
+    cursor.execute("Insert into Walhalla(imei, musicIdx)values(?, ?)", (imei, lst[0]['idx']))
+    cursor.commit()
     return json.dumps(lst[0])
 
 @app.route("/shuffle/<category>")
