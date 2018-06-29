@@ -4,6 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -14,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,6 +36,7 @@ import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -37,6 +45,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.client.HttpClient;
@@ -44,6 +54,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,25 +65,69 @@ public class MainActivity extends AppCompatActivity {
     private Activity activity;
     private LinearLayout mRootLayout;
     public MediaPlayer mediaPlayer;
+    ArrayList<ImageView> musicImage = new ArrayList<>();
+    LinkedList<HashMap<String, String>> musicQueue = new LinkedList<>();
+    GangNetwork gangNetwork;
+    CircleTransform transForm = new CircleTransform();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         context = this;
         activity = MainActivity.this;
-        GangNetwork gangNetwork = new GangNetwork(getPhone());
-        gangNetwork.like(200);
-        gangNetwork.like(123);
-        gangNetwork.like(222);
-        ArrayList<HashMap<String, String>> maps = gangNetwork.likeList();
-        Log.i("MAP SIZE", "" + maps.size());
-        for(int i=0;i<maps.size();i++) {
-            Log.i("TEST", maps.get(i).get("mp3Url"));
+        gangNetwork = new GangNetwork(getPhone());
+
+        musicImage.add((ImageView)findViewById(R.id.lp1));
+        musicImage.add((ImageView)findViewById(R.id.lp2));
+        musicImage.add((ImageView)findViewById(R.id.lp3));
+        musicImage.add((ImageView)findViewById(R.id.lp4));
+        musicImage.add((ImageView)findViewById(R.id.lp5));
+        musicImage.add((ImageView)findViewById(R.id.lp6));
+
+        musicQueueInit();
+        showImages();
+
+//        gangNetwork.like(200);
+//        gangNetwork.like(123);
+//        gangNetwork.like(222);
+//        ArrayList<HashMap<String, String>> maps = gangNetwork.likeList();
+//        Log.i("MAP SIZE", "" + maps.size());
+//        for(int i=0;i<maps.size();i++) {
+//            Log.i("TEST", maps.get(i).get("mp3Url"));
+//        }
+//        String url = gangNetwork.getMusic().get("mp3Url");
+//        Log.i("TEST", url);
+//        play(url);
+
+//        musicImage.get(0).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loadImages();
+//            }
+//        });
+
+    }
+
+    private void musicQueueInit() {
+        for(int i=0;i<6;i++) {
+            musicQueue.add(gangNetwork.getMusic());
         }
-        String url = gangNetwork.getMusic().get("mp3Url");
-        Log.i("TEST", url);
-        play(url);
+    }
+
+    private void showImages() {
+        for(int i=0;i<6;i++) {
+            HashMap<String, String> tmp = musicQueue.poll();
+            musicQueue.add(tmp);
+            String image = "";
+            try {
+                image = tmp.get("bgImage");
+            } catch(Exception e) {
+                image = "";
+            }
+            Picasso.get().load(image).transform(transForm).into(musicImage.get(i));
+        }
     }
 
     public void play(String Murl){
@@ -89,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getPhone() {
-        TelephonyManager phoneMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager phoneMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return "";
         }
@@ -103,4 +159,38 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this.activity, new String[]{permission},PERMISSION_REQUEST_CODE);
     }
 
+    public class CircleTransform implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+
+            if(squaredBitmap != source){
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+            squaredBitmap.recycle();
+
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
+    }
 }

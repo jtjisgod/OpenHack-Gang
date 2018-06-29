@@ -27,9 +27,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5'
     compile 'com.android.support:support-annotations:27.1.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'      // use this or use the latest compile version. In case u get bug.
 }

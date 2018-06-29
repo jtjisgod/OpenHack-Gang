@@ -178,7 +178,7 @@ def crawl() :
             try :
                 for collection in json.loads(req.content.decode())['collection'] :
                     genre = tag
-                    bgImage = collection['track']['artwork_url']
+                    bgImage = collection['track']['artwork_url'].replace("large", "t500x500")
                     title = collection['track']['title']
                     artist = "Anonymous"
                     try :
