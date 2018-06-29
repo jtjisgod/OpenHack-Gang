@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Animation animation=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate);
+        musicImage.get(0).setAnimation(animation);
     }
     private void loadImages() {
         (new DownloadImageTask(musicImage.get(0))).execute("https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg");
