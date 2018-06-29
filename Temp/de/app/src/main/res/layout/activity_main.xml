@@ -9,73 +9,73 @@
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp6"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="300dp"
-        android:src="@mipmap/ic_launcher_foreground"
-        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_round"
+        android:background="@drawable/img"
         />
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp5"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="250dp"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:src="@mipmap/ic_ab1"
         android:background="@android:color/transparent"
         />
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp4"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:src="@mipmap/ic_round"
         android:background="@android:color/transparent"
         />
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp3"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:src="@mipmap/ic_round"
         android:background="@android:color/transparent"
         />
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp2"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:src="@mipmap/ic_round"
         android:background="@android:color/transparent"
         />
 
     <ImageButton
         android:scaleType="fitCenter"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:id="@+id/lp1"
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:src="@mipmap/ic_round"
         android:background="@android:color/transparent"
         />
 
