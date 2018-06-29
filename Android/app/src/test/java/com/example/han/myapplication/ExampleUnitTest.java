@@ -1,4 +1,4 @@
-package com.example.han.hip2;
+package com.example.han.myapplication;
 
 import org.junit.Test;
 

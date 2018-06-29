@@ -1,4 +1,4 @@
-package com.example.han.hip2;
+package com.example.han.myapplication;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext=InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.han.hip2", appContext.getPackageName());
+        assertEquals("com.example.han.myapplication", appContext.getPackageName());
     }
 }
