@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -48,80 +50,59 @@ public class MainActivity extends AppCompatActivity {
     private Activity mActivity;
     private LinearLayout mRootLayout;
     public MediaPlayer mediaPlayer;
+    final static int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mContext=getApplicationContext();
-        mActivity=MainActivity.this;
+        mContext = getApplicationContext();
+        mActivity = MainActivity.this;
 
-        mRootLayout=findViewById(R.id.root_layout);
+        mRootLayout = findViewById(R.id.root_layout);
 
-        // URL 설정.
-//        String url="http://bughunting.net:5000/mainPlayList";
-        String url="http://bughunting.net:5000/crawlTag";
-        String responseText="";
+        // String url="http://bughunting.net:5000/mainPlayList";
+        String url = "http://bughunting.net:5000/crawlTag";
+        String responseText = "";
 
-        // AsyncTask를 통해 HttpURLConnection 수행.
-
-        NetworkTask networkTask=new NetworkTask();
+        NetworkTask networkTask = new NetworkTask();
         try {
-            responseText=networkTask.execute(url).get();
+            responseText = networkTask.execute(url).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        TelephonyManager im_num=(TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            String tel_num=im_num.getDeviceId();
-            Toast.makeText(this,tel_num,Toast.LENGTH_SHORT).show();
-            String[] music_infor=responseText.split(",");
+        String tel_num = getPhone();
+        Toast.makeText(this, tel_num, Toast.LENGTH_SHORT).show();
+        String[] music_infor = responseText.split(",");
+        try {
+            JSONArray category = new JSONArray(responseText);
+            String track;
             try {
-                JSONArray category = new JSONArray(responseText);
-
-                String music_url="http://api.soundcloud.com/tracks/" + category.get(4) + "/stream?client_id=unnFdubicpq7RVFFsQucZzduDPQTaCYy";
-                play(music_url);
-            } catch (JSONException e) {
+                networkTask = new NetworkTask();
+                responseText = networkTask.execute("http://bughunting.net:5000/shuffle/" + category.getString(0)).get();
+            } catch(Exception e) {
                 e.printStackTrace();
             }
-            return;
+            JSONArray jsonArray = new JSONArray(responseText);
+            track = jsonArray.getString(4);
+            String music_url = "http://api.soundcloud.com/tracks/" + track + "/stream?client_id=unnFdubicpq7RVFFsQucZzduDPQTaCYy";
+            try{
+                play(music_url);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-
-
-        //new SendPost().execute();
-/*
-        Toast.makeText(this,"11",Toast.LENGTH_SHORT).show();
-
-        TelephonyManager im_num=(TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Toast.makeText(this,"33",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String tel_num=im_num.getDeviceId();
-        Toast.makeText(this,tel_num,Toast.LENGTH_SHORT).show();
-
-        responseText=responseText.replaceAll(" ", "");
-        String[] music_infor=responseText.split(",");
-        String music_url="http://api.soundcloud.com/tracks/" + music_infor[4] + "/stream?client_id=unnFdubicpq7RVFFsQucZzduDPQTaCYy";
-        play(music_url);
-
-
 
     }
 
     public void play(String Murl){
+        Log.i("URL", Murl);
         mediaPlayer=new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -134,44 +115,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private class SendPost extends AsyncTask<Void,Void,String>{
-
-        @Override
-        protected String doInBackground(Void... unused) {
-            String content=executeClient();
-            return content;
+    private String getPhone() {
+        TelephonyManager phoneMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
         }
+        return phoneMgr.getLine1Number();
+    }
 
-        private String executeClient() {
-            ArrayList<NameValuePair> post=new ArrayList<NameValuePair>();
-            post.add(new BasicNameValuePair("id", "leejay"));
-            post.add(new BasicNameValuePair("pw", "1234"));
+    private void requestPermission(String permission){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+            Toast.makeText(this, "Phone state permission allows us to get phone number. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
+        }
+        ActivityCompat.requestPermissions(this, new String[]{permission},PERMISSION_REQUEST_CODE);
+    }
 
-            // 연결 HttpClient 객체 생성
-            HttpClient client = new DefaultHttpClient();
-
-            // 객체 연결 설정 부분, 연결 최대시간 등등
-            HttpParams params = client.getParams();
-            HttpConnectionParams.setConnectionTimeout(params, 5000);
-            HttpConnectionParams.setSoTimeout(params, 5000);
-
-            // Post객체 생성
-            HttpPost httpPost = new HttpPost("http://bughunting.net:5000");
-
-            try {
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(post, "UTF-8");
-                httpPost.setEntity(entity);
-                client.execute(httpPost);
-                return EntityUtils.getContentCharSet(entity);
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("LOL", "Phone number: " + getPhone());
+                } else {
+                    Toast.makeText(this, "Permission Denied. We can't get phone number.", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
+
+    private boolean checkPermission(String permission){
+        if (Build.VERSION.SDK_INT >= 23) {
+            int result = ContextCompat.checkSelfPermission(this, permission);
+            if (result == PackageManager.PERMISSION_GRANTED){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
     private class NetworkTask extends AsyncTask<String, Void, String> {
 
         @Override
