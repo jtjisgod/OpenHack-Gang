@@ -50,6 +50,14 @@ if not os.path.isfile("database.db") :
         musicIdx int(11) default 0
     );
     """)
+    cursor.execute("""
+        Create Table Magazine (
+        idx INTEGER PRIMARY KEY AUTOINCREMENT,
+        title varchar(255) default "",
+        url varchar(255) default "",
+        content text default ""
+    );
+    """)
     cursor.close()
     conn.commit()
     conn.close()
@@ -116,7 +124,7 @@ def Walhalla() :
     lst = cursor.fetchall()
     random.shuffle(lst)
     cursor.execute("Insert into Walhalla(imei, musicIdx)values(?, ?)", (imei, lst[0]['idx']))
-    cursor.commit()
+    conn.commit()
     return json.dumps(lst[0])
 
 @app.route("/shuffle/<category>")
@@ -132,6 +140,24 @@ def crawlTag() :
     lst = f.read().split("\n")
     f.close()
     return json.dumps(lst)
+
+@app.route("/write")
+def write() :
+    return render_template("write.html")
+
+@app.route("/write", methods=["POST"])
+def writeUpdate() :
+    title = request.form['title']
+    content = request.form['content']
+    url = request.form['url']
+    cursor.execute("Insert into Magazine(title, content, url)values(?, ?, ?)", (title, content, url))
+    conn.commit()
+    return "Success"
+
+@app.route("/article")
+def article() :
+    cursor.execute("Select * from Magazine where 1")
+    return json.dumps(cursor.fetchall())
 
 @app.route("/crawl")
 def crawl() :
