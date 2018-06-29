@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             canvas.drawCircle(mIcon11.getWidth()/2,mIcon11.getHeight()/2,mIcon11.getWidth()/2,paint);
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             canvas.drawBitmap(mIcon11,rect,rect,paint);
+            return mIcon11 ;
         }
 
         protected void onPostExecute(Bitmap result) {
