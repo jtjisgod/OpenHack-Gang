@@ -26,6 +26,70 @@
         </thead>
         <tbody>
             <tr>
+                <th>[GET] Article 목록</th>
+                <td>{{ host }}article</td>
+                <td>
+                    Array<br>
+                    idx, title, url, content
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] SoundCloud Crawl Hot&amp;New</th>
+                <td>{{ host }}crawl</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] Return Main playlist</th>
+                <td>{{ host }}mainPlayList</td>
+                <td>
+                    idx, genre, artist, playback, track, bgImage, title, feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, feature_8, feature_9, feature_10, feature_11, feature_12
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] Return 발할라</th>
+                <td>{{ host }}Walhalla</td>
+                <td>
+                    idx, genre, artist, playback, track, bgImage, title, feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, feature_8, feature_9, feature_10, feature_11, feature_12
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] Return crawlTag</th>
+                <td>{{ host }}crawlTag</td>
+                <td>
+                        [
+                        "indie",
+                        "rbsoul",
+                        "world",
+                        "trap",
+                        "house"
+                        ]
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] get 특정 범위 랜덤</th>
+                <td>{{ host }}shuffle/{tagName:string}</td>
+                <td>
+                    idx, genre, artist, playback, track, bgImage, title, feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, feature_8, feature_9, feature_10, feature_11, feature_12
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] like / dislike toggler</th>
+                <td>{{ host }}like/{idx}</td>
+                <td>
+                    like / dislike / fail
+                </td>
+            </tr>
+            <tr>
+                <th>[GET] like list</th>
+                <td>{{ host }}likeList?imei={imei}</td>
+                <td>
+                    Array <br>
+                        idx, genre, artist, playback, track, bgImage, title, feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, feature_8, feature_9, feature_10, feature_11, feature_12
+                    
+                </td>
+            </tr>
+ <!--            <tr>
                 <th>[POST] 회원가입</th>
                 <td>{{ host }}list/realtime</td>
                 <td>
@@ -166,7 +230,7 @@
         'username',
         'cheche',
         'jtjisgod',
-    ]
+    ],
 }</pre></td>
                 </tr>
             <tr>
@@ -218,7 +282,7 @@
                 <th>내가 좋아하는 앨범 추가</th>
                 <td>{{ host }}add/album/{idx}</td>
                 <td>status ( success / fail )</td>
-            </tr>
+            </tr> -->
         </tbody>
     </table>
 </body>
