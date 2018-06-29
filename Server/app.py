@@ -111,7 +111,7 @@ def likeList() :
         cursor.execute("Select * from Musics where idx=?", (row[0],))
         lst.append(cursor.fetchone())
     random.shuffle(lst)
-    return json.dumps(lst[0])
+    return json.dumps(lst)
 
 @app.route("/Walhalla")
 def Walhalla() :
