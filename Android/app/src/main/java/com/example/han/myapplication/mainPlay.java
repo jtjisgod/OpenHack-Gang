@@ -60,7 +60,11 @@ public class mainPlay extends FragmentActivity {
     private void nextMusic() {
         music = gangNetwork.getMusic();
         bgImage = (ImageView)findViewById(R.id.background_image);
-        musicTitle.setText(music.get("title"));
+        if(music.get("title").length() > 30) {
+            musicTitle.setText(music.get("title").substring(0, 30) + "...");
+        } else {
+            musicTitle.setText(music.get("title"));
+        }
         artist.setText("- " + music.get("artist"));
         Picasso.get().load(music.get("bgImage")).into(bgImage);
         play(music.get("mp3Url"));
@@ -106,6 +110,11 @@ public class mainPlay extends FragmentActivity {
             Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    public void like(View v) {
+        ((ImageView)v).setVisibility(View.INVISIBLE);
+        gangNetwork.like(Integer.parseInt(music.get("idx")));
     }
 
     public class CircleTransform implements Transformation {

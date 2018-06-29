@@ -139,20 +139,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void play(String Murl){
-        Log.i("URL", Murl);
-        mediaPlayer=new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(Murl);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (IOException e) {
-            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-
     private String getPhone() {
         TelephonyManager phoneMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
@@ -166,6 +152,20 @@ public class MainActivity extends FragmentActivity {
             Toast.makeText(context, "Phone state permission allows us to get phone number. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
         }
         ActivityCompat.requestPermissions(this.activity, new String[]{permission},PERMISSION_REQUEST_CODE);
+    }
+
+    public void play(String Murl){
+        Log.i("URL", Murl);
+        mediaPlayer=new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(Murl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
 

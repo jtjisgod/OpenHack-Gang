@@ -31,7 +31,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
-            android:onClick="ctrl"
+            android:onClick="like"
             android:src="@drawable/save" />
 
         <ImageView
@@ -76,6 +76,7 @@
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:singleLine="true"
             android:typeface="sans" />
     </RelativeLayout>
 
