@@ -20,6 +20,7 @@ public class GangNetwork {
     private String phone;
 
     public GangNetwork(String phone) {
+        Log.i("Phone", phone);
         this.phone = phone;
     }
 

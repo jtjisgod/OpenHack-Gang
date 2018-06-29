@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">#ffffff88</item>
+        <item name="android:progressTint">#ffffff</item>
+        <item name="android:minWidth">200dp</item>
+    </style>
+
 </resources>
