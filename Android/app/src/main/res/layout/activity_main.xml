@@ -61,10 +61,11 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/valhallagradation"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:alpha="0.5"
-        />
+        android:scaleType="centerCrop"
+        android:src="@drawable/valhallagradation" />
 
     <ImageView
         android:scaleType="fitCenter"
@@ -87,5 +88,17 @@
         android:onClick="remove"
         android:src="@drawable/goup" />
 
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:rotation="-90"
+        android:text="___ Valhalla" />
 
 </RelativeLayout>
