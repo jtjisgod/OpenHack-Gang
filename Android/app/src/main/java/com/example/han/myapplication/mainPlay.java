@@ -3,6 +3,7 @@ package com.example.han.myapplication;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -45,6 +46,8 @@ public class mainPlay extends FragmentActivity {
     private TextView musicTitle;
     private HashMap<String, String> music;
     private boolean isPlaying = false;
+    private String type = "main";
+    private HashMap<String,String> command;
     public MediaPlayer mediaPlayer;
 
     class MyThread extends Thread {
@@ -67,6 +70,13 @@ public class mainPlay extends FragmentActivity {
         gangNetwork = new GangNetwork(getPhone());
         musicTitle = (TextView)findViewById(R.id.title);
         artist = (TextView)findViewById(R.id.artist);
+        command = new HashMap<>();
+        command.put("All", "main");
+        command.put("Indie", "indie");
+        command.put("R&B Soul", "rbsoul");
+        command.put("World", "world");
+        command.put("Trap", "trap");
+        command.put("House", "house");
         nextMusic();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -78,7 +88,12 @@ public class mainPlay extends FragmentActivity {
     }
 
     private void nextMusic() {
-        music = gangNetwork.getMusic();
+        try {
+            mediaPlayer.stop();
+        } catch(Exception e) {
+
+        }
+        music = gangNetwork.getMusic(type);
         bgImage = (ImageView)findViewById(R.id.background_image);
         if(music.get("title").length() > 25) {
             musicTitle.setText(music.get("title").substring(0, 25) + "...");
@@ -123,9 +138,31 @@ public class mainPlay extends FragmentActivity {
         }
     }
 
+    public void next(View v) {
+        Intent intent = new Intent(mainPlay.this, MainActivity.class);
+        startActivity(intent);
+        ctrl((ImageView)findViewById(R.id.CTRLbtn));
+    }
+
+    public void clearMenu(View v) {
+        findViewById(R.id.menu).setVisibility(View.GONE);
+        findViewById(R.id.menuBack).setVisibility(View.GONE);
+    }
+
+    // 5천 개미
+    // 5 천~ 1 만
+    public void menuClick(View v) {
+        TextView tv = (TextView)v;
+        type = command.get(tv.getText());
+        Log.i("TEST", type);
+        findViewById(R.id.menu).setVisibility(View.GONE);
+        findViewById(R.id.menuBack).setVisibility(View.GONE);
+        nextMusic();
+    }
+
     public void menu(View v) {
-        ((ImageView)v).setVisibility(View.INVISIBLE);
-        gangNetwork.like(Integer.parseInt(music.get("idx")));
+        findViewById(R.id.menu).setVisibility(View.VISIBLE);
+        findViewById(R.id.menuBack).setVisibility(View.VISIBLE);
     }
 
     public void like(View v) {
@@ -147,50 +184,10 @@ public class mainPlay extends FragmentActivity {
         }
     }
 
-    public class CircleTransform implements Transformation {
-        private final int BORDER_COLOR = Color.WHITE;
-        private final int BORDER_RADIUS = 5;
-
-        @Override
-        public Bitmap transform(Bitmap source) {
-            int size = Math.min(source.getWidth(), source.getHeight());
-
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-
-            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-            if (squaredBitmap != source) {
-                source.recycle();
-            }
-
-            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
-
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-            paint.setShader(shader);
-            paint.setAntiAlias(true);
-
-            float r = size / 2f;
-
-            // Prepare the background
-            Paint paintBg = new Paint();
-            paintBg.setColor(BORDER_COLOR);
-            paintBg.setAntiAlias(true);
-
-            // Draw the background circle
-            canvas.drawCircle(r, r, r, paintBg);
-
-            // Draw the image smaller than the background so a little border will be seen
-            canvas.drawCircle(r, r, r - BORDER_RADIUS, paint);
-
-            squaredBitmap.recycle();
-            return bitmap;
-        }
-
-        @Override
-        public String key() {
-            return "circle";
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ctrl((ImageView)findViewById(R.id.CTRLbtn));
     }
+
 }

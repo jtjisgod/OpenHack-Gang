@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/root_layout"
     tools:context="com.example.han.myapplication.MainActivity"
-    android:background="@drawable/valhallagradation">
+    android:background="@drawable/back">
 
     <ImageView
         android:scaleType="fitCenter"
@@ -59,6 +59,14 @@
         />
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/valhallagradation"
+        android:alpha="0.5"
+        />
+
+    <ImageView
         android:scaleType="fitCenter"
         android:layout_width="240dp"
         android:layout_height="240dp"
@@ -66,8 +74,18 @@
         android:padding="0sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
+        android:onClick="toggle"
         />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:onClick="remove"
+        android:src="@drawable/goup" />
 
 
 </RelativeLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".playerDeleted">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp6"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="300dp"
+            />
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp5"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="260dp"
+            />
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp4"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="220dp"
+            />
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp3"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="180dp"
+            />
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp2"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            />
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:id="@+id/lp1"
+            android:padding="0sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            />
+
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
+
+
