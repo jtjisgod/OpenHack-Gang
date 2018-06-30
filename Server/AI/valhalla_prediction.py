@@ -76,7 +76,7 @@ hypothesis = tf.matmul(X, W) + b
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
 # Minimize
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-5)
+optimizer = tf.train.AdamOptimizer(learning_rate=1e-5)
 train = optimizer.minimize(cost)
 
 
@@ -109,10 +109,20 @@ fn=fn/len_te_y
 tn=tn/len_te_y
 fp=fp/len_te_y
 
+#get F-score
 precision=tp/(tp+fp)
 recall=tp/(tp+fn)
 f_score=2*((precision*recall)/(precision+recall))
 
-print('precision: ',precision)
-print('recall: ',recall)
-print('f_score: ',f_score)
+# print('precision: ',precision)
+# print('recall: ',recall)
+# print('f_score: ',f_score)
+
+df_test=pd.DataFrame(test)
+df_val=pd.DataFrame(pred)
+df_pred = df_test.assign(val=df_val)
+result=df_pred[df_pred.val>1]
+
+out = result.to_json(orient='records')
+with open('val.json', 'w') as f:
+    f.write(out)
